@@ -1,0 +1,13 @@
+{
+    "name": "java-interview-questions",
+    "version": "1.0.0",
+    "author": "Tanmaya Lenka",
+    "description": "Java Interview Questions and Answers",
+    "type": "module",
+    "scripts": {
+        "gen": "node scripts/generate-toc.mjs"
+    },
+    "dependencies": {
+        "github-slugger": "^2.0.0"
+    }
+}
