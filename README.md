@@ -10,20 +10,12 @@ Multithreading, Java 8+, JVM, Spring Boot and more.
 ## Table of Contents
 
 <!-- TOC_START -->
-| Questions |
-| --------- |
-| [1. What is Java?](#1-what-is-java) |
-| [2. What are the features of Java?](#2-what-are-the-features-of-java) |
-| [3. What is JVM?](#3-what-is-jvm) |
-| [4. What is the difference between JDK, JRE and JVM?](#4-what-is-the-difference-between-jdk-jre-and-jvm) |
-| [5. What is Object-Oriented Programming?](#5-what-is-object-oriented-programming) |
-| [6. What are the four pillars of OOP?](#6-what-are-the-four-pillars-of-oop) |
-| [7. What is inheritance in Java?](#7-what-is-inheritance-in-java) |
-| [8. What is polymorphism?](#8-what-is-polymorphism) |
-| [9. What is the Java Collections Framework?](#9-what-is-the-java-collections-framework) |
-| [10. What is the difference between ArrayList and LinkedList?](#10-what-is-the-difference-between-arraylist-and-linkedlist) |
-| [11. What is a Lambda Expression?](#11-what-is-a-lambda-expression) |
-| [12. What is the Stream API?](#12-what-is-the-stream-api) |
+| No. | Questions |
+| --- | --------- |
+| 1 | [Why is String immutable in Java?](#1-why-is-string-immutable-in-java) |
+| 2 | [Is String immutable or final in Java?](#2-is-string-immutable-or-final-in-java) |
+| 3 | [What is String Constant Pool (SCP) in Java?](#3-what-is-string-constant-pool-scp-in-java) |
+| 4 | [String vs StringBuffer vs StringBuilder](#4-string-vs-stringbuffer-vs-stringbuilder) |
 <!-- TOC_END -->
 
 # Java Interview Questions
@@ -32,119 +24,65 @@ Multithreading, Java 8+, JVM, Spring Boot and more.
 
 ## Core Java
 
-### 1. What is Java?
+### 1. Why is String immutable in Java?
+String is immutable in Java mainly for security, thread safety, memory optimization, and performance.
 
-Java is a high-level, object-oriented programming
-language designed to be platform-independent.
+- Security: Prevents unexpected modification of sensitive data.
 
+- String Constant Pool: Allows multiple references to safely share the same String object.
 
-[⬆ Back to TOC](#table-of-contents)
+- Thread Safety: Multiple threads can share String objects without synchronization.
 
-### 2. What are the features of Java?
+- HashCode Caching: Its hashCode can be cached because its value never changes.
 
-Some important features of Java are:
-
-- Platform independent
-- Object-oriented
-- Robust
-- Secure
-- Multithreaded
-- Portable
+- Reliability: Prevents unexpected changes in file paths, URLs, and class-loading-related values.
 
 
-[⬆ Back to TOC](#table-of-contents)
+[⬆ Back to Table](#table-of-contents)
 
-### 3. What is JVM?
+### 2. Is String immutable or final in Java?
+- `String` is a final class, so it cannot be subclassed.
 
-JVM stands for Java Virtual Machine.
+- Its internal state is designed to be immutable.
 
-It executes Java bytecode and provides the runtime
-environment for Java applications.
+- Making the class final prevents subclasses from overriding its behavior and breaking immutability.
 
+[⬆ Back to Table](#table-of-contents)
 
-[⬆ Back to TOC](#table-of-contents)
+### 3. What is String Constant Pool (SCP) in Java?
+String Constant Pool is a special memory area inside Java Heap Memory that stores and reuses String literals to reduce duplicate object creation and optimize memory usage.
+#### Explanation:
 
-### 4. What is the difference between JDK, JRE and JVM?
+- `String s1 = "Java"`: Creates a String object in the String Constant Pool (if it doesn't already exist).
 
-- JDK: Java Development Kit.
-- JRE: Java Runtime Environment.
-- JVM: Java Virtual Machine.
+- `String s2 = "Java"`: Reuses the existing String object from the pool.
 
+- `String s3 = new String("Java")`: Explicitly creates a new String object in Heap Memory outside the pool.
 
-[⬆ Back to TOC](#table-of-contents)
-
-## Object-Oriented Programming
-
-### 5. What is Object-Oriented Programming?
-
-Object-Oriented Programming is a programming
-paradigm based on objects and classes.
+- `s3.intern()` returns the canonical pooled reference for "Java".
 
 
-[⬆ Back to TOC](#table-of-contents)
+| Comparison | Output | Reason |
+| ---------- | ------ | ------ |
+| `s1 == s2` | true | Both references point to the same object. |
+| `s1 == s3` | false | Both references point to different objects. |
+| `s1.equals(s3)` | true | Both objects contain the same value. |
+| `s1 == s3.intern()` | true | Returns the canonical pooled reference |
 
-### 6. What are the four pillars of OOP?
+[⬆ Back to Table](#table-of-contents)
 
-The four pillars are:
-
-1. Encapsulation
-2. Inheritance
-3. Polymorphism
-4. Abstraction
-
-
-[⬆ Back to TOC](#table-of-contents)
-
-### 7. What is inheritance in Java?
-
-Inheritance allows one class to acquire properties
-and methods from another class using the extends keyword.
-
-
-[⬆ Back to TOC](#table-of-contents)
-
-### 8. What is polymorphism?
-
-Polymorphism means one interface or method name
-can represent different implementations.
+### 4. String vs StringBuffer vs StringBuilder
+| Features | String | StringBuffer | StringBuilder |
+|----------|--------|--------------|---------------|
+| Mutability | Immutable | Mutable | Mutable |
+| Thread Safety | Yes (immutable state) | Yes (synchronized methods) | No |
+| Synchronization | Not required | Yes | No |
+| Performance | Slow for repeated modifications | Slower than StringBuilder generally | Faster generally |
+| Memory | New object for changed value | Modifies existing object | Modifies existing object |
+| Introduced | Java 1.0 | Java 1.0 | Java 1.5 |
+| Storage | String Pool / Heap | Heap | Heap |
 
 
-[⬆ Back to TOC](#table-of-contents)
-
-## Collections Framework
-
-### 9. What is the Java Collections Framework?
-
-It is a set of interfaces and classes used to store
-and manipulate groups of objects.
-
-
-[⬆ Back to TOC](#table-of-contents)
-
-### 10. What is the difference between ArrayList and LinkedList?
-
-ArrayList uses a dynamic array, whereas LinkedList
-uses a doubly linked list.
-
-
-[⬆ Back to TOC](#table-of-contents)
-
-## Java 8
-
-### 11. What is a Lambda Expression?
-
-A lambda expression is a concise way to represent
-an anonymous function in Java.
-
-
-[⬆ Back to TOC](#table-of-contents)
-
-### 12. What is the Stream API?
-
-The Stream API allows developers to process
-collections of data using declarative operations.
-
-
-[⬆ Back to TOC](#table-of-contents)
+[⬆ Back to Table](#table-of-contents)
 
 <!-- QUESTIONS_END -->

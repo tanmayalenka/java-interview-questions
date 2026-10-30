@@ -18,7 +18,7 @@ const QUESTIONS_END_MARKER = "<!-- QUESTIONS_END -->";
 
 // Back to TOC link
 const BACK_TO_TOC =
-    "[⬆ Back to TOC](#table-of-contents)";
+    "[⬆ Back to Table](#table-of-contents)";
 
 // Read README.md
 const rawFile = fs.readFileSync(filePath, "utf8");
@@ -90,20 +90,20 @@ for (
 
     questions.push({
         number: currentQuestion,
-        title: numberedTitle,
+        title: questionTitle,
         slug,
     });
 }
 
 // Generate Table of Contents
 const tableOfContentsLines = [
-    "| Questions |",
-    "| --------- |",
+    "| No. | Questions |",
+    "| --- | --------- |",
 ];
 
-questions.forEach(({ title, slug }) => {
+questions.forEach(({ number, title, slug }) => {
     tableOfContentsLines.push(
-        `| [${title}](#${slug}) |`
+        `| ${number} | [${title}](#${slug}) |`
     );
 });
 
