@@ -18,7 +18,10 @@ for beginners and experienced developers.
 | 7 | [Object-Oriented Programming (OOPs) Concepts in Java](#7-object-oriented-programming-oops-concepts-in-java) |
 | 8 | [Why Java doesn't support multiple inheritance through classes?](#8-why-java-doesnt-support-multiple-inheritance-through-classes) |
 | 9 | [Difference Between Abstract Class and Interface](#9-difference-between-abstract-class-and-interface) |
-| 10 | [Java Reflection API](#10-java-reflection-api) |
+| 10 | [Use of `super` and `this` keyword in Java](#10-use-of-super-and-this-keyword-in-java) |
+| 11 | [Java Reflection API](#11-java-reflection-api) |
+| 12 | [Throwable, Exception, RuntimeException, and Error](#12-throwable-exception-runtimeexception-and-error) |
+| 13 | [`try`, `catch`, and `finally` in Java](#13-try-catch-and-finally-in-java) |
 <!-- TOC_END -->
 
 # Java Interview Questions
@@ -266,7 +269,30 @@ This ambiguity is called the Diamond Problem. However, Java supports multiple in
 
 [⬆ Back to Table](#table-of-contents)
 
-### 10. Java Reflection API
+### 10. Use of `super` and `this` keyword in Java
+In Java, `super` and `this` are keywords used to refer to the current object and its parent class. They are commonly used in inheritance and constructors.
+
+__i. `this` keyword__: The `this` keyword refers to the current class object.
+- To refer to current class instance variables `this.id`.
+- To call current class methods `this.value()`.
+- To call the current class constructor using `this()`.
+- To pass the current object as an argument `value(this)`.
+
+__ii. `super` keyword__: The super keyword refers to the immediate parent class object.
+- To access parent class variables `super.id`.
+- To call parent class methods `super.value()`.
+- To call parent class constructor using `super()`.
+
+#### Important interview points:
+
+- `this()` and `super()` must be the first statement in a constructor.
+- You cannot use both `this()` and `super()` in the same constructor.
+- Java automatically inserts `super()` if no explicit constructor call is written (provided the parent has an accessible no-argument constructor).
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 11. Java Reflection API
 The Java Reflection API allows a Java program to inspect and manipulate classes, methods, constructors, fields, and interfaces at runtime.
 
 Reflection is useful when you want to:
@@ -284,6 +310,203 @@ Reflection is useful when you want to:
 - Jackson: Mapping Java objects to JSON.
 - Maven/Plugins: Dynamic class loading and plugin execution.
 
+[⬆ Back to Table](#table-of-contents)
+
+### 12. Throwable, Exception, RuntimeException, and Error
+#### __i. Throwable__
+`Throwable` is the parent class of all errors and exceptions in Java.<br>
+It has two main child classes:
+- Exception
+- Error
+```
+Object
+   |
+Throwable
+   |----------|
+Exception    Error
+   |
+RuntimeException
+```
+#### __ii. Exception__
+`Exception` represents conditions that an application may want to handle. There are two main categories:<br>
+__a. Checked Exception__<br>
+- Checked at compile time. The programmer must handle it using `try-catch` or declare it using `throws`.
+- Examples: `IOException`, `SQLException`, `ClassNotFoundException`
+```java
+try {
+        FileReader f = new FileReader("abc.txt");
+    } catch (IOException e) {
+        System.out.println("File not found");
+    }
+```
+__b. Unchecked Exception__<br>
+These are exceptions under `RuntimeException`. The compiler does not require you to handle them.
+
+#### __iii. RuntimeException__
+- `RuntimeException` is a child class of `Exception`.
+- It represents exceptions that generally occur during program execution.
+- Examples: `ArithmeticException`, `NullPointerException`, `NumberFormatException`, `ClassCastException`
+```java    
+    int a = 10;
+    int b = 0;
+
+    System.out.println(a / b); // ArithmeticException
+```
+
+#### __iv. RuntimeException__<br>
+- Error represents serious problems that applications generally cannot recover from.
+- Examples: `OutOfMemoryError`, `StackOverflowError`, `VirtualMachineError`, `AssertionError`
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 13. `try`, `catch`, and `finally` in Java
+
+#### __i. `try` block__
+- Contains code that might cause an exception.
+- Java monitors this code for errors.
+- If an exception occurs, control moves to the matching `catch` block.
+
+#### __ii. `catch` block__
+- Handles the exception thrown by the `try` block.
+- You can have multiple catch blocks to handle different types of exceptions.
+
+#### __iii. finally block__
+- Executes whether an exception occurs or not (with a few exceptional termination cases).
+- Commonly used for cleanup operations, such as closing files or database connections.
+
+#### Important rules for interviews
+- A `try` block must be followed by at least one `catch` or a `finally` block.
+- You can use multiple `catch` blocks.
+- Only one matching `catch` block executes.
+- `finally` generally executes whether an exception occurs or not.
+- `finally` is commonly used to release resources.
+- A `finally` block may not execute if the JVM terminates abruptly, such as through `System.exit()`.
+
+#### **W.r.t. `return` statement**
+**i. Return inside try block**<br> 
+If the `try` block has a return statement, the `finally` block executes before the method actually returns.
+
+```java
+public class Main {
+    static int test() {
+        try {
+            return 10;
+        }
+        finally {
+            System.out.println("Finally executed");
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(test());
+    }
+}
+```
+
+Output:
+```
+Finally executed
+10
+```
+
+**ii. Return inside both try and finally**<br>
+If both blocks contain return statements, the `finally` return overrides the `try` return.
+```java
+public class Main {
+    static int test() {
+        try {
+            return 10;
+        }
+        finally {
+            return 20;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(test());
+    }
+}
+```
+Output:
+```
+20
+```
+**iii. Return inside catch and finally**
+```java
+public class Main {
+    static int test() {
+        try {
+            int x = 10 / 0;
+            return 10;
+        }
+        catch (Exception e) {
+            return 20;
+        }
+        finally {
+            return 30;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(test());
+    }
+}
+```
+Output:
+```
+30
+```
+**iv. Return inside try, but finally modifies the variable**
+```java
+public class Main {
+    static int test() {
+        int a = 10;
+
+        try {
+            return a;
+        }
+        finally {
+            a = 20;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(test());
+    }
+}
+```
+When Java encounters `return a`, it saves the return value (10). Then the `finally` block changes a to 20, but the saved return value remains 10.
+
+Output:
+```
+10
+```
+**v. Return with an object reference**
+```java
+public class Main {
+    static int[] test() {
+        int[] arr = {10};
+
+        try {
+            return arr;
+        }
+        finally {
+            arr[0] = 20;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(test()[0]);
+    }
+}
+```
+The return value is a reference to the array. The `finally` block modifies the same array object before the method returns.
+
+Output:
+```
+20
+```
 
 [⬆ Back to Table](#table-of-contents)
 
