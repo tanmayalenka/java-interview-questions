@@ -22,6 +22,14 @@ for beginners and experienced developers.
 | 11 | [Java Reflection API](#11-java-reflection-api) |
 | 12 | [Throwable, Exception, RuntimeException, and Error](#12-throwable-exception-runtimeexception-and-error) |
 | 13 | [`try`, `catch`, and `finally` in Java](#13-try-catch-and-finally-in-java) |
+| 14 | [How many ways can we create a thread in Java?](#14-how-many-ways-can-we-create-a-thread-in-java) |
+| 15 | [What is the Executor Framework in Java?](#15-what-is-the-executor-framework-in-java) |
+| 16 | [What is ExecutorService in Java?](#16-what-is-executorservice-in-java) |
+| 17 | [Runnable vs Callable in Java](#17-runnable-vs-callable-in-java) |
+| 18 | [Runnable vs Callable in Java](#18-runnable-vs-callable-in-java) |
+| 19 | [What is CompletableFuture in Java?](#19-what-is-completablefuture-in-java) |
+| 20 | [What is Virtual Threads (Project Loom) in Java?](#20-what-is-virtual-threads-project-loom-in-java) |
+| 21 | [Platform Thread vs Virtual Thread](#21-platform-thread-vs-virtual-thread) |
 <!-- TOC_END -->
 
 # Java Interview Questions
@@ -312,6 +320,8 @@ Reflection is useful when you want to:
 
 [⬆ Back to Table](#table-of-contents)
 
+## Exception Handling
+
 ### 12. Throwable, Exception, RuntimeException, and Error
 #### __i. Throwable__
 `Throwable` is the parent class of all errors and exceptions in Java.<br>
@@ -507,6 +517,235 @@ Output:
 ```
 20
 ```
+
+[⬆ Back to Table](#table-of-contents)
+
+## Multithreading
+
+### 14. How many ways can we create a thread in Java?
+There are two basic ways:
+#### **i. Extending the Thread class**
+- `Thread` is the predefined Java class.
+- `run()` contains the task to execute.
+- `start()` starts a new thread and invokes `run()`.
+- `run()` executes like a normal method when called directly.
+```java
+class MyThread extends Thread {
+
+    public void run() {
+        System.out.println("Thread is running");
+    }
+
+    public static void main(String[] args) {
+
+        MyThread t1 = new MyThread();
+
+        t1.start();
+    }
+}
+```
+#### **i. Implementing the Runnable interface**
+- Create a class that implements `Runnable` and override its `run()` method.
+- Since `Runnable` is a functional interface, we can use a `lambda` expression.
+
+Note: Implementing `Runnable` is generally preferred because Java supports single inheritance, allowing your class to extend another class.
+```java
+class MyThread implements Runnable {
+
+    public void run() {
+        System.out.println("Thread is running");
+    }
+
+    public static void main(String[] args) {
+
+        MyThread obj = new MyThread();
+
+        Thread t1 = new Thread(obj);
+
+        t1.start();
+    }
+}
+```
+
+[⬆ Back to Table](#table-of-contents)
+
+#### Life Cycle of a Thread
+A Java thread has six states:
+| **State** | **Meaning** |
+| ----- | ----- |
+| NEW | Thread is created |
+| RUNNABLE | Thread is ready or running |
+| BLOCKED | Waiting to acquire a monitor lock |
+| WAITING | Waiting indefinitely for another thread |
+| TIMED_WAITING | Waiting for a specified time |
+| TERMINATED | Thread execution is completed |
+
+### 15. What is the Executor Framework in Java?
+The Executor Framework is a part of the java.util.concurrent package introduced in Java 5.
+It provides a higher-level API to manage thread creation, thread execution, and thread lifecycle.
+Instead of manually creating threads, we submit tasks to an Executor, which manages their execution.
+
+```
+Executor
+   |
+   v
+ExecutorService
+   |
+   v
+ScheduledExecutorService
+```
+
+**Benefits**:
+
+- Thread reusability.
+- Better resource management.
+- Asynchronous task execution.
+- Improved application scalability.
+- Separation of task submission from task execution.
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 16. What is ExecutorService in Java?
+`ExecutorService` is an interface extends `Executor` in Java's `java.util.concurrent` package used to manage and execute asynchronous tasks using a pool of threads.
+
+Instead of manually creating and managing threads, ExecutorService handles thread creation, task execution, and thread lifecycle management.
+
+**Types of ExecutorService**
+| Type | Description |
+|---|---|
+| `newFixedThreadPool(5)` | Creates a pool with 5 fixed threads |
+| `newCachedThreadPool()` | Creates threads as needed and reuses idle threads |
+| `newSingleThreadExecutor()` | Executes tasks sequentially using one thread |
+| `newScheduledThreadPool(3)` | Executes tasks after a delay or periodically |
+
+**Important methods**
+| Method | Purpose |
+|---|---|
+| `execute()` | Executes a `Runnable` task |
+| `submit()` | Submits a task and returns a `Future` |
+| `shutdown()` | Stops accepting new tasks |
+| `shutdownNow()` | Attempts to stop running tasks |
+| `isShutdown()` | Checks whether shutdown was initiated |
+| `isTerminated()` | Checks whether all tasks have completed |
+| `awaitTermination()` | Waits for task completion |
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 17. Runnable vs Callable in Java
+Both `Runnable` and `Callable` are functional interfaces in Java used to represent tasks that can be executed by threads or the Executor Framework.
+
+The main difference is that `Runnable` cannot return a result or throw checked exceptions, whereas `Callable` can do both.
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 18. Runnable vs Callable in Java
+
+| Feature | Runnable | Callable |
+|---|---|---|
+| **Package** | `java.lang` | `java.util.concurrent` |
+| **Method** | `run()` | `call()` |
+| **Return type** | `void` | Generic type `V` |
+| **Returns a result** | No | Yes |
+| **Checked exceptions** | Cannot declare checked exceptions | Can throw checked exceptions |
+| **Used with** | `Thread`, `ExecutorService` | `ExecutorService` |
+| **Result retrieval** | Not directly supported | Through `Future` |
+
+[⬆ Back to Table](#table-of-contents)
+
+### 19. What is CompletableFuture in Java?
+`CompletableFuture` is a Java class used for asynchronous and non-blocking programming. It allows you to execute tasks in the background, perform operations after tasks complete, combine multiple asynchronous tasks, and handle exceptions.
+
+| Method | Description | Return Type |
+|---|---|---|
+| `supplyAsync()` | Executes an asynchronous task and returns a result. | `CompletableFuture<T>` |
+| `runAsync()` | Executes an asynchronous task without returning a result. | `CompletableFuture<Void>` |
+| `thenApply()` | Transforms the result of the previous task. | `CompletableFuture<U>` |
+| `thenApplyAsync()` | Transforms the result asynchronously using an executor. | `CompletableFuture<U>` |
+| `thenAccept()` | Consumes the result without returning anything. | `CompletableFuture<Void>` |
+| `thenCompose()` | Chains dependent asynchronous tasks and avoids nested `CompletableFuture`. | `CompletableFuture<U>` |
+| `thenCombine()` | Combines results of two independent `CompletableFuture` tasks. | `CompletableFuture<V>` |
+| `allOf()` | Waits for all supplied `CompletableFuture` tasks to complete. | `CompletableFuture<Void>` |
+| `anyOf()` | Completes when any one of the supplied futures completes. | `CompletableFuture<Object>` |
+| `exceptionally()` | Handles exceptions and provides a fallback result. | `CompletableFuture<T>` |
+| `handle()` | Handles both successful and exceptional completion. | `CompletableFuture<U>` |
+| `whenComplete()` | Executes an action after completion without changing the result. | `CompletableFuture<T>` |
+| `thenRun()` | Executes an action after the previous task without receiving its result. | `CompletableFuture<Void>` |
+| `get()` | Retrieves the result and blocks until completion; throws checked exceptions. | `T` |
+| `join()` | Retrieves the result and blocks until completion; throws unchecked exceptions. | `T` |
+| `getNow()` | Returns the result if completed; otherwise returns a default value. | `T` |
+| `orTimeout()` | Completes exceptionally if the specified timeout expires. | `CompletableFuture<T>` |
+| `completeOnTimeout()` | Completes with a fallback value if the specified timeout expires. | `CompletableFuture<T>` |
+| `complete()` | Manually completes the future with a given value. | `boolean` |
+| `completeExceptionally()` | Manually completes the future exceptionally. | `boolean` |
+| `cancel()` | Attempts to cancel the future. | `boolean` |
+| `isDone()` | Checks whether the future has completed. | `boolean` |
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 20. What is Virtual Threads (Project Loom) in Java?
+**Virtual Threads** are lightweight threads introduced in **Java 21** as a permanent feature (Project Loom). They make it easier to build highly concurrent applications without creating thousands of expensive platform (OS) threads.
+
+Virtual Threads can be created by using:
+- `Thread.startVirtualThread()`
+- `Thread.ofVirtual()`
+- `Executors.newVirtualThreadPerTaskExecutor()`
+
+#### i. How Virtual Threads Work internally
+Virtual threads run on top of platform threads called Carrier Threads. This allows a small number of platform threads to support a large number of virtual threads.
+
+The execution works like this:
+
+- JVM creates a virtual thread.
+- JVM schedules it onto a carrier platform thread.
+- The virtual thread executes its task.
+- When it performs a supported blocking operation, it can unmount from the carrier thread.
+- The carrier thread becomes available to execute another virtual thread.
+- When the blocked operation completes, the virtual thread can be scheduled again.
+
+#### ii. Good use cases:
+
+- REST API calls
+- Database calls
+- Microservices
+- HTTP client requests
+- File I/O
+- Applications handling thousands of concurrent requests
+
+#### iii. Not particularly useful for:
+
+- CPU-intensive calculations
+- Image processing
+- Heavy mathematical operations
+- Tasks that continuously consume CPU
+
+#### iv. Virtual Thread Limitations
+- Don't pool virtual threads. Generally, create one per task.
+- Don't use virtual threads to increase CPU parallelism.
+- Avoid excessive synchronization that can cause thread pinning.
+- Be careful with database connection pools: virtual threads don't increase the number of available database connections.
+- Virtual threads are daemon threads, so they don't keep the JVM alive by themselves.
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 21. Platform Thread vs Virtual Thread
+
+| Feature | Platform Thread | Virtual Thread |
+|---|---|---|
+| Introduced | Java 1.0 | Java 21 (permanent) |
+| Managed by | OS scheduler | JVM scheduler |
+| OS mapping | 1:1 | Many:1 |
+| Creation cost | Relatively high | Very low |
+| Memory consumption | Higher | Lower |
+| Context switching | OS-managed | JVM scheduling plus OS scheduling |
+| Blocking I/O | Usually blocks OS thread | Usually releases carrier thread |
+| Scalability | Comparatively limited | Very high |
+| CPU-intensive tasks | Suitable | No special advantage |
+| I/O-intensive tasks | Less efficient at high concurrency | Very suitable |
 
 [⬆ Back to Table](#table-of-contents)
 
