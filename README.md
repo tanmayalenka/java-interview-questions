@@ -26,10 +26,15 @@ for beginners and experienced developers.
 | 15 | [What is the Executor Framework in Java?](#15-what-is-the-executor-framework-in-java) |
 | 16 | [What is ExecutorService in Java?](#16-what-is-executorservice-in-java) |
 | 17 | [Runnable vs Callable in Java](#17-runnable-vs-callable-in-java) |
-| 18 | [Runnable vs Callable in Java](#18-runnable-vs-callable-in-java) |
-| 19 | [What is CompletableFuture in Java?](#19-what-is-completablefuture-in-java) |
-| 20 | [What is Virtual Threads (Project Loom) in Java?](#20-what-is-virtual-threads-project-loom-in-java) |
-| 21 | [Platform Thread vs Virtual Thread](#21-platform-thread-vs-virtual-thread) |
+| 18 | [What is CompletableFuture in Java?](#18-what-is-completablefuture-in-java) |
+| 19 | [What is Virtual Threads (Project Loom) in Java?](#19-what-is-virtual-threads-project-loom-in-java) |
+| 20 | [Java Collections Framework](#20-java-collections-framework) |
+| 21 | [Important Collections diffs for interviews](#21-important-collections-diffs-for-interviews) |
+| 22 | [How does HashMap work internally in Java?](#22-how-does-hashmap-work-internally-in-java) |
+| 23 | [How does ConcurrentHashMap work internally in Java?](#23-how-does-concurrenthashmap-work-internally-in-java) |
+| 24 | [HashMap vs ConcurrentHashMap](#24-hashmap-vs-concurrenthashmap) |
+| 25 | [Explain Stream API in Java](#25-explain-stream-api-in-java) |
+| 26 | [Java 8, 17, and 21 Features](#26-java-8-17-and-21-features) |
 <!-- TOC_END -->
 
 # Java Interview Questions
@@ -41,15 +46,15 @@ for beginners and experienced developers.
 ### 1. Why is String immutable in Java?
 String is immutable in Java mainly for security, thread safety, memory optimization, and performance.
 
-- Security: Prevents unexpected modification of sensitive data.
+- **Security**: Prevents unexpected modification of sensitive data.
 
-- String Constant Pool: Allows multiple references to safely share the same String object.
+- **String Constant Pool**: Allows multiple references to safely share the same String object.
 
-- Thread Safety: Multiple threads can share String objects without synchronization.
+- **Thread Safety**: Multiple threads can share String objects without synchronization.
 
-- HashCode Caching: Its hashCode can be cached because its value never changes.
+- **HashCode Caching**: Its hashCode can be cached because its value never changes.
 
-- Reliability: Prevents unexpected changes in file paths, URLs, and class-loading-related values.
+- **Reliability**: Prevents unexpected changes in file paths, URLs, and class-loading-related values.
 
 
 [⬆ Back to Table](#table-of-contents)
@@ -312,11 +317,11 @@ Reflection is useful when you want to:
 - Inspect constructors and interfaces.
 
 #### Real-world Uses of Reflection
-- Spring Framework: Dependency injection and bean creation.
-- Hibernate: Entity inspection and object mapping.
-- JUnit: Discovering and executing test methods.
-- Jackson: Mapping Java objects to JSON.
-- Maven/Plugins: Dynamic class loading and plugin execution.
+- **Spring Framework**: Dependency injection and bean creation.
+- **Hibernate**: Entity inspection and object mapping.
+- **JUnit**: Discovering and executing test methods.
+- **Jackson**: Mapping Java objects to JSON.
+- **Maven/Plugins**: Dynamic class loading and plugin execution.
 
 [⬆ Back to Table](#table-of-contents)
 
@@ -567,8 +572,6 @@ class MyThread implements Runnable {
 }
 ```
 
-[⬆ Back to Table](#table-of-contents)
-
 #### Life Cycle of a Thread
 A Java thread has six states:
 | **State** | **Meaning** |
@@ -579,6 +582,9 @@ A Java thread has six states:
 | WAITING | Waiting indefinitely for another thread |
 | TIMED_WAITING | Waiting for a specified time |
 | TERMINATED | Thread execution is completed |
+
+
+[⬆ Back to Table](#table-of-contents)
 
 ### 15. What is the Executor Framework in Java?
 The Executor Framework is a part of the java.util.concurrent package introduced in Java 5.
@@ -638,11 +644,6 @@ Both `Runnable` and `Callable` are functional interfaces in Java used to represe
 
 The main difference is that `Runnable` cannot return a result or throw checked exceptions, whereas `Callable` can do both.
 
-
-[⬆ Back to Table](#table-of-contents)
-
-### 18. Runnable vs Callable in Java
-
 | Feature | Runnable | Callable |
 |---|---|---|
 | **Package** | `java.lang` | `java.util.concurrent` |
@@ -655,7 +656,7 @@ The main difference is that `Runnable` cannot return a result or throw checked e
 
 [⬆ Back to Table](#table-of-contents)
 
-### 19. What is CompletableFuture in Java?
+### 18. What is CompletableFuture in Java?
 `CompletableFuture` is a Java class used for asynchronous and non-blocking programming. It allows you to execute tasks in the background, perform operations after tasks complete, combine multiple asynchronous tasks, and handle exceptions.
 
 | Method | Description | Return Type |
@@ -686,7 +687,7 @@ The main difference is that `Runnable` cannot return a result or throw checked e
 
 [⬆ Back to Table](#table-of-contents)
 
-### 20. What is Virtual Threads (Project Loom) in Java?
+### 19. What is Virtual Threads (Project Loom) in Java?
 **Virtual Threads** are lightweight threads introduced in **Java 21** as a permanent feature (Project Loom). They make it easier to build highly concurrent applications without creating thousands of expensive platform (OS) threads.
 
 Virtual Threads can be created by using:
@@ -729,10 +730,7 @@ The execution works like this:
 - Be careful with database connection pools: virtual threads don't increase the number of available database connections.
 - Virtual threads are daemon threads, so they don't keep the JVM alive by themselves.
 
-
-[⬆ Back to Table](#table-of-contents)
-
-### 21. Platform Thread vs Virtual Thread
+#### Platform Thread vs Virtual Thread
 
 | Feature | Platform Thread | Virtual Thread |
 |---|---|---|
@@ -746,6 +744,406 @@ The execution works like this:
 | Scalability | Comparatively limited | Very high |
 | CPU-intensive tasks | Suitable | No special advantage |
 | I/O-intensive tasks | Less efficient at high concurrency | Very suitable |
+
+[⬆ Back to Table](#table-of-contents)
+
+## Collections
+
+### 20. Java Collections Framework
+The Java Collections Framework (JCF) is a set of classes and interfaces in Java used to store, manage, and manipulate groups of objects efficiently.<br>
+The framework is mainly divided into these interfaces:
+- List
+- Set
+- Queue
+- Map
+
+Note: Map is part of the Collections Framework, but it does not extend the Collection interface.
+![Screenshot](images/java-collections.jpg)
+
+#### **List Interface**
+- Maintains insertion order.
+- Allows duplicate elements.
+- Allows null elements in common implementations.
+- Supports index-based access.
+- Elements can be inserted or removed at specific positions.
+
+1. **ArrayList**
+- ArrayList uses a dynamic array internally.
+- Fast searching using indexes.
+- Insertion in the middle can be slower.
+- **Use**: When you frequently retrieve elements using their indexes.
+2. **LinkedList**
+- LinkedList stores elements as nodes connected through links.
+- Implements List and Deque.
+- Efficient insertion and deletion when the position is known.
+- Java's LinkedList is a doubly linked list.
+- **Use**: When you need frequent insertion and deletion at the ends, or queue/deque operations.
+3. **Vector**
+- Vector is a dynamic array similar to ArrayList.
+- Vector's methods are synchronized.
+- Legacy collection class.
+4. **Stack**
+- Stack is a legacy class that extends Vector.
+- It follows the LIFO (Last In, First Out) principle.
+
+#### **Set Interface**
+- Does not allow duplicate elements.
+- Does not support index-based access.
+- Ordering depends on the implementation.
+- Usually allows at most one null in implementations that support null.
+
+#### **SortedSet Interface**
+- SortedSet stores elements in sorted order.
+- It is an interface, not a class.
+- Its common implementation is TreeSet.
+
+#### **NavigableSet Interface**
+- NavigableSet extends SortedSet.
+- It provides additional navigation methods.
+
+1. **HashSet** 
+- HashSet stores unique elements using a hash table.
+- Does not guarantee insertion order.
+- **Use**: When you want to store unique elements and do not need ordering.
+2. **LinkedHashSet** 
+- LinkedHashSet stores unique elements and maintains insertion order.
+- **Use**: When you need unique elements in insertion order.
+3. **TreeSet** 
+- TreeSet implements NavigableSet.
+- Stores elements in sorted order.
+
+#### **Queue Interface**
+- Queue is used to store elements for processing.
+- Generally follows FIFO (First In, First Out).
+- Used in scheduling and processing tasks.
+
+#### **Deque Interface**
+- Deque means Double Ended Queue.
+- It allows insertion and deletion from both ends.
+
+1. **PriorityQueue**
+- PriorityQueue processes elements based on priority rather than insertion order.
+- By default, numbers are processed in natural ascending order.
+- **Use**: Task scheduling, priority-based processing, and selecting the smallest or largest element.
+2. **ArrayDeque**
+- ArrayDeque is a resizable array implementation of the Deque interface.
+- It allows insertion and deletion from both ends.
+- ArrayDeque does not allow null elements.
+
+**LinkedList**: Can also be used as a queue.
+
+#### **Map Interface**
+- Stores data in key-value pairs.
+- Keys must be unique.
+- Values can be duplicated.
+- Each key maps to at most one value.
+- Does not extend the Collection interface.
+
+#### **SortedMap Interface**
+SortedMap stores keys in sorted order.
+
+#### **NavigableMap Interface**
+- NavigableMap extends SortedMap.
+- It provides methods to navigate through keys.
+
+1. **HashMap**
+- HashMap stores key-value pairs using hashing.
+- It does not guarantee insertion order.
+2. **LinkedHashMap**
+- LinkedHashMap maintains insertion order by default.
+- **Use**: When you need key-value pairs in insertion order.
+3. **TreeMap**
+- TreeMap implements NavigableMap.
+- It stores entries sorted according to keys.
+4. **Hashtable**<br>
+Legacy synchronized map.
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 21. Important Collections diffs for interviews
+
+
+#### **1. ArrayList vs LinkedList in Java**
+| Basis | ArrayList | LinkedList |
+|---|---|---|
+| Internal Structure | Dynamic Array | Doubly Linked List |
+| Memory Usage | Less memory | More memory |
+| Accessing Elements | Fast - O(1) | Slow - O(n) |
+| Searching | O(n) | O(n) |
+| Insertion at Beginning | O(n) | O(1) |
+| Insertion at End | O(1) Amortized | O(1) |
+| Insertion/Deletion in Middle | O(n) | O(n)* |
+| Performance | Better for accessing elements | Useful for frequent operations at ends |
+| Interfaces | List, RandomAccess | List, Deque |
+| Best Use Case | Frequent searching and retrieval | Frequent insertion and deletion at ends |
+
+**Note:** In LinkedList, middle insertion/deletion takes O(1) after reaching the required position, but finding that position takes O(n).
+
+#### Interview Tips
+- **ArrayList:** Best for fast searching and index-based access.
+- **LinkedList:** Best for frequent insertion and deletion at both ends.
+- **ArrayList** is generally preferred in real-world Java applications.
+- Both allows duplicate and null elements.
+
+#### **2. HashSet vs TreeSet in Java**
+
+| Basis | HashSet | TreeSet |
+|---|---|---|
+| Internal Structure | Hash Table | Red-Black Tree |
+| Ordering | No guaranteed order | Sorted order (Ascending by default) |
+| Duplicate Elements | Not Allowed | Not Allowed |
+| Null Values | Allows one null | Generally does not allow null |
+| Insertion | O(1) Average | O(log n) |
+| Deletion | O(1) Average | O(log n) |
+| Searching | O(1) Average | O(log n) |
+| Performance | Faster | Slower than HashSet generally |
+| Interfaces | Set | NavigableSet, SortedSet |
+| Best Use Case | Fast insertion, deletion and searching | Maintaining sorted and unique elements |
+
+#### Interview Tips
+- **HashSet:** Use when you need unique elements with faster operations.
+- **TreeSet:** Use when you need unique elements in sorted order.
+- Both do not allow duplicate elements.
+- HashSet uses `hashCode()` and `equals()` to identify duplicates.
+- TreeSet uses `Comparable` or `Comparator` to sort elements and identify equivalent elements.
+
+#### **3. HashMap vs Hashtable in Java**
+
+| Basis | HashMap | Hashtable |
+|---|---|---|
+| Internal Structure | Hash Table | Hash Table |
+| Thread Safety | Not Synchronized | Synchronized |
+| Performance | Faster | Slower |
+| Null Keys | Allows one null key | Does not allow null keys |
+| Null Values | Allows multiple null values | Does not allow null values |
+| Insertion | O(1) Average | O(1) Average |
+| Searching | O(1) Average | O(1) Average |
+| Ordering | No guaranteed order | No guaranteed order |
+| Introduced In | Java 1.2 | Java 1.0 |
+| Best Use Case | Non-threaded applications | Legacy synchronized applications |
+
+#### Interview Tips
+- **HashMap:** Use when thread safety is not required. It provides better performance.
+- **Hashtable:** Synchronized and thread-safe, but generally slower.
+- HashMap allows one null key and multiple null values.
+- Hashtable does not allow null keys or null values.
+- Both store data in key-value pairs and do not allow duplicate keys.
+- For modern concurrent applications, prefer `ConcurrentHashMap` over Hashtable.
+
+[⬆ Back to Table](#table-of-contents)
+
+### 22. How does HashMap work internally in Java?
+- HashMap is a part of the Java Collection Framework that stores data in key-value pairs.
+- Internally, it uses an array of buckets. Each bucket can contain a linked list of nodes, and from Java 8 onwards, if collisions increase beyond a certain threshold, the linked list can be converted into a Red-Black Tree.
+- HashMap uses the key's hashCode() method to calculate the bucket location and equals() to identify the correct key.
+
+#### **Internal structure**
+Internally, HashMap maintains an array of Node objects. Each Node contains four things: hash, key, value, and next reference.
+```java
+static class Node<K,V> {
+    final int hash;
+    final K key;
+    V value;
+    Node<K,V> next;
+}
+```
+- Hash stores the calculated hash value.
+- Key stores the actual key.
+- Value stores the corresponding value.
+- Next points to the next node when multiple entries belong to the same bucket.
+
+#### **Map.put(k, v)**
+- Whenever we call put(), HashMap first calculates the hashCode() of the key.
+- Then it applies a hash-spreading function to improve distribution.
+- After that, it calculates the bucket index using the formula (n - 1) & hash, where n is the array capacity.
+- If the bucket is empty, it inserts a new node.
+- If the bucket already contains an entry, HashMap checks whether the key already exists using hash comparison and equals().
+- If the key exists, it updates the value. Otherwise, it adds a new node to that bucket.
+```java
+static final int hash(Object key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
+```
+
+#### **Hash Collision**
+- When two keys have the same bucket index, this situation is called a collision.
+- HashMap handles collisions using separate chaining.
+- Multiple nodes can be stored in the same bucket using a linked list.
+- From Java 8 onwards, if the bucket becomes sufficiently crowded and the table capacity is at least 64, HashMap can convert the linked list into a Red-Black Tree to improve search performance.
+
+#### **Map.get(k)**
+- When we call get(key), HashMap calculates the hash of the key and identifies the bucket index.
+- Then it checks the first node.
+- If the hash matches and the key matches using equals(), it returns the value.
+- Otherwise, it traverses the linked list or searches the tree until it finds the matching key.
+
+#### **Resizing**
+- By default, HashMap has an initial capacity of 16 and a load factor of 0.75.
+- Therefore, its initial threshold is 16 multiplied by 0.75, which is 12.
+- When the number of entries exceeds the threshold, HashMap increases its capacity, generally doubling it from 16 to 32.
+- This helps maintain efficient performance.
+
+#### **Contract - equals() and hashCode()**
+- HashMap uses hashCode() to identify the bucket and equals() to identify the actual key.
+- If two objects are logically equal, they must return the same hashCode().
+- If we override equals() without correctly overriding hashCode(), HashMap may not be able to retrieve logically equal objects correctly.
+
+#### **Treeification in Java 8+**
+When a bucket becomes sufficiently crowded, HashMap can convert its linked list into a Red-Black Tree.
+
+Important internal constants:
+
+| Constant | Value |
+| ---- | ---- |
+| TREEIFY_THRESHOLD	| 8 |
+| UNTREEIFY_THRESHOLD |	6 |
+| MIN_TREEIFY_CAPACITY | 64 |
+
+Important points:
+
+- Treeification is considered when a bucket reaches the treeification threshold.
+- If the table capacity is less than 64, HashMap prefers resizing instead of treeification.
+- A tree bin can be converted back into a linked list when it becomes sufficiently small.
+#### Why Red-Black Tree?
+
+- Linked List search: O(n).
+- Red-Black Tree search: O(log n), under suitable key ordering.
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 23. How does ConcurrentHashMap work internally in Java?
+- `ConcurrentHashMap` is a thread-safe implementation of the Map interface in Java.
+- It allows multiple threads to read and update the map concurrently without locking the entire map.
+- Unlike HashMap, it is designed for multithreaded environments.
+- Does not allow null keys or null values.
+
+Internally, ConcurrentHashMap uses:
+
+- An array of buckets (table).
+- Linked lists to handle hash collisions.
+- Red-Black Trees when a bucket contains too many nodes.
+- CAS operations for lock-free updates in certain situations.
+- Synchronized blocks for bucket-level locking.
+
+#### **1. Map.put(k, v)**
+ConcurrentHashMap does not lock the entire map during insertion. It uses fine-grained synchronization at the bucket level.
+- Calculate the hash of the key.
+- Find the bucket index using the hash.
+- Check whether the bucket is empty.
+- If the bucket is empty, use CAS (Compare-And-Swap) to insert the new node.
+- If the bucket already contains nodes, synchronize on the first node in that bucket.
+- Traverse the linked list to check whether the key already exists.
+- If the key exists, update its value.
+- Otherwise, add a new node.
+- If the number of nodes in a bucket reaches the treeification threshold, it may convert the linked list into a Red-Black Tree.
+
+#### **2. Map.get(k)**
+Read operations generally do not require locking.
+- Calculate the hash of the key.
+- Find the corresponding bucket.
+- Check the first node.
+- If the key matches, return the value.
+- Otherwise, traverse the linked list or search the Red-Black Tree.
+- Return the matching value.
+
+**CAS (Compare-And-Swap)**
+
+- CAS is an atomic operation.
+- It checks whether a memory location contains an expected value. If it does, it updates that value atomically.
+- For example, when two threads try to insert elements into the same empty bucket, CAS ensures that only one thread successfully inserts its node. The other thread retries.
+
+**Synchronized block**
+
+- When a bucket is already occupied, ConcurrentHashMap synchronizes on the first node of that bucket before modifying its contents.
+- This means different buckets can be modified concurrently by different threads.
+
+
+[⬆ Back to Table](#table-of-contents)
+
+### 24. HashMap vs ConcurrentHashMap
+
+| Feature | HashMap | ConcurrentHashMap |
+|---|---|---|
+| Thread Safety | Not thread-safe | Thread-safe |
+| Synchronization | No synchronization | CAS + synchronized |
+| Null Keys | One allowed | Not allowed |
+| Null Values | Multiple allowed | Not allowed |
+| Performance | Faster in single-threaded scenarios | Better for concurrent access |
+| Locking | No locking | Fine-grained locking |
+| Concurrent Access | Not safe for concurrent modifications | Supports concurrent operations |
+| Iterator | Fail-fast | Weakly consistent |
+| Internal Structure | Array + LinkedList + Red-Black Tree | Array + LinkedList + Red-Black Tree |
+
+[⬆ Back to Table](#table-of-contents)
+
+### 25. Explain Stream API in Java
+- The Stream API in Java (introduced in Java 8) is used to process collections of data in a functional and declarative way.
+- It allows you to perform operations such as filtering, sorting, mapping, and reducing data without writing lengthy loops.
+- A Stream is a sequence of elements that supports operations to process data.
+#### Intermediate operations
+- Intermediate operations are the operations in Java Stream API that transform or filter the elements of a Stream. 
+- They return another Stream, so we can chain multiple intermediate operations together.
+- They are lazy in nature, which means they are not executed until a terminal operation is called.
+- `filter()`, `map()`, `sorted()`
+#### Terminal Operations
+- Terminal operations are the operations that produce the final result or perform an action on the Stream. 
+- They trigger the execution of the Stream pipeline and consume the Stream. 
+- After a terminal operation, we cannot reuse the same Stream.
+- `forEach()`, `collect()`, `toList()`
+
+[⬆ Back to Table](#table-of-contents)
+
+### 26. Java 8, 17, and 21 Features
+
+#### **1. Java 8 Features**
+
+| Feature | Description |
+|---|---|
+| Lambda Expressions | Allows writing concise functional code |
+| Functional Interfaces | Interface containing exactly one abstract method |
+| Stream API | Processes collections using functional operations |
+| Default Methods | Allows interfaces to have method implementations |
+| Static Methods in Interfaces | Allows static methods inside interfaces |
+| Method References | Refers to methods using the `::` operator |
+| Optional Class | Helps avoid NullPointerException |
+| New Date and Time API | Introduced LocalDate, LocalTime, LocalDateTime |
+| CompletableFuture | Supports asynchronous programming |
+| forEach() | Iterates over collections using lambda expressions |
+
+#### **2. Java 17 Features**
+
+| Feature | Description |
+|---|---|
+| Sealed Classes | Restricts which classes can extend or implement a class/interface |
+| Pattern Matching for instanceof | Eliminates explicit type casting |
+| Records | Simplifies immutable data carrier classes |
+| Text Blocks | Supports multiline strings |
+| Switch Expressions | Allows switch to return values |
+| Strong Encapsulation | Strongly encapsulates JDK internals |
+| Random Generator API | Provides improved random number generation |
+| Enhanced Pseudo-Random Number Generators | Introduces new random generator algorithms |
+
+**Note:** Records, Text Blocks, and Switch Expressions were finalized in earlier Java versions but are available in Java 17.
+
+#### **3. Java 21 Features**
+
+| Feature | Description |
+|---|---|
+| Virtual Threads | Lightweight threads for handling large numbers of concurrent tasks |
+| Record Patterns | Allows destructuring record values |
+| Pattern Matching for switch | Supports pattern matching inside switch expressions |
+| Sequenced Collections | Introduces APIs for collections with defined encounter order |
+| String Templates | Preview feature for string interpolation |
+| Unnamed Patterns and Variables | Allows unused variables to be represented using `_` (Preview) |
+| Unnamed Classes and Instance Main Methods | Simplifies writing basic Java programs (Preview) |
+| Scoped Values | Provides a mechanism for sharing immutable data across threads (Preview) |
+| Structured Concurrency | Simplifies concurrent task management (Preview) |
+| Generational ZGC | Improves garbage collection performance |
+| Foreign Function and Memory API | Allows Java programs to interact with native code and memory |
+
 
 [⬆ Back to Table](#table-of-contents)
 
