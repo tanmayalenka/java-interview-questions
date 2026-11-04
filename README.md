@@ -35,6 +35,7 @@ for beginners and experienced developers.
 | 24 | [HashMap vs ConcurrentHashMap](#24-hashmap-vs-concurrenthashmap) |
 | 25 | [Explain Stream API in Java](#25-explain-stream-api-in-java) |
 | 26 | [Java 8, 17, and 21 Features](#26-java-8-17-and-21-features) |
+| 27 | [SOLID Principles](#27-solid-principles) |
 <!-- TOC_END -->
 
 # Java Interview Questions
@@ -1144,6 +1145,48 @@ Read operations generally do not require locking.
 | Generational ZGC | Improves garbage collection performance |
 | Foreign Function and Memory API | Allows Java programs to interact with native code and memory |
 
+
+[⬆ Back to Table](#table-of-contents)
+
+### 27. SOLID Principles
+- SOLID is a set of five object-oriented design principles introduced to make software more maintainable, reusable, flexible, and easy to test.
+- It consists of five principles: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion.
+
+#### **1. S – Single Responsibility Principle (SRP)**
+- According to SRP, a class should have only one responsibility or one reason to change.
+- For example, suppose we have an Employee class that calculates salary, saves employee details to the database, and generates reports. This violates SRP because the class handles multiple responsibilities. To follow SRP, we should create separate classes such as Employee, SalaryCalculator, EmployeeRepository, and EmployeeReport.
+- This makes the application easier to maintain and test.
+
+**Remember**: One class = One responsibility.
+
+#### **2. O – Open/Closed Principle (OCP)**
+- According to OCP, a class should be open for extension but closed for modification.
+- It means we should be able to add new functionality without modifying existing tested code.
+- For example, in an e-commerce application, suppose we support Credit Card payments. Later, the business wants to support UPI and PayPal payments. Instead of modifying the existing payment logic every time, we can create a Payment interface and implement it using different payment classes.
+- This makes the application flexible and extensible.
+
+**Remember**: Add new functionality without changing existing code.
+
+#### **3. L – Liskov Substitution Principle (LSP)**
+- According to LSP, child classes should be replaceable for their parent classes without affecting the correctness of the application.
+- For example, consider a Bird parent class and Sparrow and Penguin child classes. Both Sparrow and Penguin are birds, but a Penguin cannot fly. If we define a fly() method in the Bird class, Penguin will have to implement behavior that it cannot support. To solve this problem, we can separate flying behavior into a Flyable interface.
+- This ensures that child classes follow the expected behavior of their parent classes.
+
+**Remember**: Child class should not break parent class behavior.
+
+#### **4. I – Interface Segregation Principle (ISP)**
+- According to ISP, a class should not be forced to implement methods that it does not need.
+- For example, suppose we have a Worker interface containing work() and eat() methods. A Human can perform both operations, but a Robot can only work. If Robot implements the Worker interface, it must provide an unnecessary eat() method. To solve this, we can create separate interfaces such as Workable and Eatable. Now Human can implement both interfaces, while Robot implements only Workable.
+- This makes interfaces smaller and more maintainable.
+
+**Remember**: Don't force classes to implement unnecessary methods.
+
+#### **5. D – Dependency Inversion Principle (DIP)**
+- According to DIP, high-level modules should not depend on low-level modules. Both should depend on abstractions.
+- For example, suppose a NotificationService directly creates an EmailService object. Now, if we want to change email notifications to SMS notifications, we need to modify the NotificationService. Instead, we can create a MessageService interface and implement it using EmailService and SMSService. NotificationService will depend on the MessageService interface rather than a concrete implementation. We can inject the required implementation through constructor injection.
+- This reduces tight coupling and makes the application easier to test.
+
+**Remember**: Depend on interfaces, not concrete classes.
 
 [⬆ Back to Table](#table-of-contents)
 
